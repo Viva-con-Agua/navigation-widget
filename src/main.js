@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import TopNavigation from './TopNavigation.vue'
+window.Vue = Vue
 
 Vue.config.productionTip = false
 Vue.use(TopNavigation)
