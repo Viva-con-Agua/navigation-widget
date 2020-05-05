@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve --name dispenser-navigation",
-    "build": "vue-cli-service build --target wc --name dispenser-navigation",
+    "serve": "vue-cli-service serve --name navigation-widget",
+    "build": "vue-cli-service build --target wc --name navigation-widget",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
