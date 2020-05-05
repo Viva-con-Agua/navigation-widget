@@ -5,7 +5,7 @@ window.Vue = require('vue')
 Vue.config.productionTip = false
 Vue.use(TopNavigation)
 new Vue({
-  el: '#app',
+  el: '#navigation-widget',
   components: { TopNavigation },
   template: '<TopNavigation />'
 })
