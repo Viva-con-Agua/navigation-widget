@@ -9,7 +9,7 @@ module.exports = {
             splitChunks: false
         },
         output: {
-            filename: '[name].js'
+            filename: 'navigation-widget.js'
         }
     }
 }
