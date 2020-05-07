@@ -4,14 +4,15 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --name navigation-widget",
-    "build": "vue-cli-service build --target wc --name navigation-widget",
+    "build": "vue-cli-service build --name navigation-widget",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "less-loader": "^6.0.0",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vue-custom-element": "^3.2.14"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.3.0",
