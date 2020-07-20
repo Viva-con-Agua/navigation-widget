@@ -3,22 +3,15 @@
         <div class="container">
             <div class="navbar-header">
                 <a class="navbar-brand" href="/">
-                    <img src="/dispenser/images/drop_small.png"/>
+                    <img :src="require(`@/assets/drop_small.png`)"/>
                     <div>
-                        <span class="bold">header.applicationName</span>
-                        <span>header.organizationName</span>
+                        <span class="bold"> {{ name }}</span>
                     </div>
                 </a>
-                <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
-                    <span class="sr-only">nav.labels.screenreader.toggle</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
             </div>
             <div class="navbar-collapse collapse" id="navbar-main">
                 <ul class="nav navbar-nav navbar-right">
-                    <MenuEntry v-for="entry in entries" :key="entry.id" :entry="entry" type="button" :layer="0" :roles="currentUserRoles" />
+                    <MenuEntry v-for="entry in entries" :key="entry.id" :entry="entry" type="button" :layer="0" />
                 </ul>
                 <ul v-if="errors && errors.length">
                     <li v-for="error of errors" :key="error.id">
@@ -37,6 +30,16 @@ import MenuEntry from './MenuEntry'
 export default {
     name: 'TopNavigation',
     components: { MenuEntry },
+    props: {
+        name: {
+            type: String,
+            default: 'Nav'
+        },
+        nav: {
+            type: String,
+            default: 'test2'
+        }
+    },
     data () {
         return {
             'entries': [],
@@ -53,53 +56,13 @@ export default {
         }
     },
     methods: {
-        addChild: function () {
-            this.entrys.entrys.push({
-                name: 'new stuff'
-            })
-        },
-        getRoles: function(user) {
-            var roles = user.roles.map((role) => role.role)
-            this.currentUserRoles = roles.concat(
-                user.profiles.reduce((supporterRoles, profile) => supporterRoles.concat(profile.supporter.roles), [])
-            )
-        },
         getNavigation: function () {
-            axios.get('http://localhost/api/v1/navigation/default').then(r => {
+            axios.get( process.env.VUE_APP_BACKEND_URL + '/v1/navigation/' + this.nav ).then(r => {
                         this.entries = r.data.entries
                     }).catch(e => {
                         this.errors.push(e)
                     })
                 
-        },
-        getEntries: function () {
-            return this.entries.filter((e) => Object.prototype.hasOwnProperty.call(e, 'hasAccess') && e.hasAccess)
-        },
-        hasAccess: function (entry) {
-            function compare(roleUser, roleRoute) {
-                function checkCrewName () {
-                    return (!Object.prototype.hasOwnProperty.call(roleRoute, "crewNames") || (Object.prototype.hasOwnProperty.call(roleUser, "crew") && roleRoute.crewNames.some((crewName) => crewName === roleUser.crew.name)))
-                }
-                function checkPillar () {
-                    return (!Object.prototype.hasOwnProperty.call(roleRoute, "pillars") || (Object.prototype.hasOwnProperty.call(roleUser, "pillar") && roleRoute.pillars.some((pillar) => pillar === roleUser.pillar.pillar)))
-                }
-                return ((typeof roleUser === "string") && roleUser === roleRoute.role && !Object.prototype.hasOwnProperty.call(roleRoute, "crewNames") && !Object.prototype.hasOwnProperty.call(roleRoute, "pillars")) ||
-                    ((typeof roleUser === "object") && roleUser.name === roleRoute.role && checkCrewName() && checkPillar())
-            }
-            return !Object.prototype.hasOwnProperty.call(entry, 'permission') || entry.permission.reduce(
-                (access, roleRoute) => access || this.currentUserRoles.reduce((roleAccess, roleUser) => roleAccess || compare(roleUser, roleRoute), false),
-                false
-            )
-        },
-        calcAccess: function (entries) {
-            var that = this
-            return entries.map((entry) => {
-                entry['hasAccess'] = that.hasAccess(entry)
-                if(Object.prototype.hasOwnProperty.call(entry, "entrys")) {
-                    entry.entrys = that.calcAccess(entry.entrys)
-                }
-                return entry
-            })
         }
     },
     mounted () {

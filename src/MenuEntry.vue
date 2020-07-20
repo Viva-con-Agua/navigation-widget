@@ -1,12 +1,11 @@
 <template>
-  <li :class="getClasses()" ref="menuEntry" @mouseleave="closeFoldedOnLeave" :style="getStyle()">
-    <a v-bind:href="getURL()" @click="handleClick">{{ getLabel() }}</a>
+  <li :class="getClasses()" ref="menuEntry" @mouseleave.prevent="closeFoldedOnLeave" :style="getStyle()">
+    <a :href="entry.url" @mouseover.prevent="foldOut">{{ getLabel() }}</a>
     <ul class="nav-sub" ref="subMenu">
-      <MenuEntry v-for="sub in getSubs()" :key="sub.id" :entry="sub" type="menu-entry" :layer="layer + 1" v-on:vca-close-sub="closeFolded" />
+      <MenuEntry v-for="entry in entry.entries" :key="entry.id" :entry="entry" type="menu-entry" :layer="layer + 1" @vca-close-sub="closeFolded" />
     </ul>
   </li>
 </template>
-
 <script>
     export default {
       name: "MenuEntry",
@@ -32,9 +31,6 @@
             return ""
           } 
         },
-        getURL: function () {
-          return !this.hasSubMenu() ? this.entry.url : '#'
-        },
         getLabel: function () {
           if (navigator.language === 'de-DE') {
             return this.entry.label.de_DE
@@ -43,7 +39,7 @@
           }
         },
         getSubMenuClass: function () {
-          return this.hasSubMenu() ? 'hasSub' : ''
+            return this.entry.entries.length > 0 ? 'hasSub' : ''
         },
         getTypeClass: function () {
           return this.type === 'button' ?  'vca-button-primary' : 'menu-entry'
@@ -54,34 +50,11 @@
         getClasses: function () {
           return [this.getSubMenuClass(), this.getTypeClass(), this.getLayerClass()].filter((className) => className !== '').join(" ")
         },
-        getSubs: function () {
-          var res = []
-          if(this.entry.entries !== null) {
-            res = this.entry.entries.filter((e) => Object.prototype.hasOwnProperty.call( e, 'hasAccess') && e.hasAccess)
-          }
-          return res
-        },
-        hasSubMenu: function () {
-          return this.entry.entries !== null
-        },
         foldOut: function (event) {
-          event.preventDefault()
           if(event.target.parentElement.classList.contains('folded')) {
             event.target.parentElement.classList.remove('folded')
           } else {
             event.target.parentElement.classList.add('folded')
-          }
-        },
-        clickLink: function (event) {
-          var target = event.target || event.srcElement
-          target.click()
-        },
-        handleClick: function (event) {
-          if(this.hasSubMenu()) {
-            this.foldOut(event)
-          } else {
-            this.clickLink(event)
-            this.closeFolded()
           }
         },
         closeFolded: function() {
