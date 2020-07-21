@@ -1,10 +1,7 @@
-import Vue from 'vue'
-import TopNavigation from './TopNavigation.vue'
+import Vue from 'vue';
+import wrap from '@vue/web-component-wrapper';
+import Navigation from './components/Navigation';
 
-Vue.config.productionTip = false
-Vue.use(TopNavigation)
-new Vue({
-  el: '#app',
-  components: { TopNavigation },
-  template: '<TopNavigation />'
-})
+const NavigationWidget = wrap(Vue, Navigation);
+
+window.customElements.define('navigation-widget', NavigationWidget);

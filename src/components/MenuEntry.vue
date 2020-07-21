@@ -72,9 +72,9 @@
     }
 </script>
 
-<style scoped lang="less">
-  @import "./assets/general.less";
-  @import "./assets/responsive.less";
+<style lang="less">
+  @import "../assets/general.less";
+  @import "../assets/responsive.less";
 
   a {
     color: #colors[secundary] ! important;

@@ -1,5 +1,5 @@
 <template>
-    <div id="top-navigation" class="navbar navbar-vca navbar-default vca-shadow"> <!-- navbar-default -->
+    <div id="navigation-widget" class="navbar navbar-vca navbar-default vca-shadow"> <!-- navbar-default -->
         <div class="container">
             <div class="navbar-header">
                 <a class="navbar-brand" href="/">
@@ -28,7 +28,7 @@ import axios from 'axios'
 import MenuEntry from './MenuEntry'
 
 export default {
-    name: 'TopNavigation',
+    name: 'Navigation',
     components: { MenuEntry },
     props: {
         name: {
@@ -72,8 +72,8 @@ export default {
 </script>
 
 <style lang="less">
-@import "./assets/general.less";
-@import "./assets/responsive.less";
+@import "../assets/general.less";
+@import "../assets/responsive.less";
 @import "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css";
 
 .navbar {

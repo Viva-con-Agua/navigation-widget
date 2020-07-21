@@ -1,7 +1,8 @@
 module.exports = {
+
     runtimeCompiler: true,
     css: {
-        extract: false,
+        extract: true,
     },
     productionSourceMap: false,
     configureWebpack: {
